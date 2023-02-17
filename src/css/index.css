@@ -161,6 +161,18 @@
   display: -webkit-flex;
   align-items: center;
 }
+.w100 {
+  width: 100%;
+}
+.vw100 {
+  width: 100vw;
+}
+.h100 {
+  height: 100%;
+}
+.vh100 {
+  height: 100vh;
+}
 body {
   --color-little: #CCCCCC;
   --color-small: #999999;
@@ -213,6 +225,9 @@ body {
 }
 .fw-b {
   font-weight: bold;
+}
+.b-red {
+  border: 1px solid red;
 }
 body {
   --tiny: 2.25px;
