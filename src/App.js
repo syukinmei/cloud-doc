@@ -45,7 +45,7 @@ function App() {
     <div className="app-container vh100 flex">
       <div className='left-menu'>
         <FileSearch
-          title="我的云文档"
+          title="hello! cloud-doc"
           onFileSearch={(value) => { console.log(value) }}
         />
       </div>
