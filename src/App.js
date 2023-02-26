@@ -3,6 +3,27 @@ import "./styles.less";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 
+const mockData = [
+  {
+    id: "1",
+    title: "first post",
+    body: "should be aware of this",
+    createTime: 1677004129000,
+  },
+  {
+    id: "2",
+    title: "second post",
+    body: "## this is the title",
+    createTime: 1677004129000,
+  },
+  {
+    id: "3",
+    title: "wow~syukinmei No.1 fighting!!!",
+    body: "## this is the title",
+    createTime: 1677004129000,
+  },
+];
+
 function App() {
   const dragControllerDiv = function () {
     console.log("dragControllerDiv方法挂载");
@@ -50,7 +71,14 @@ function App() {
             console.log(value);
           }}
         />
-        <FileList />
+        <FileList
+          files={mockData}
+          onFileClick={(id) => console.log("onFileClick", id)}
+          onFileDelete={(id) => console.log("delete", id)}
+          onSaveEdit={(id, newValue) => {
+            console.log("onSaveEdit", { id, newValue });
+          }}
+        />
       </div>
       <div className="resize fxy--center" title="收缩侧边栏">
         ⋮

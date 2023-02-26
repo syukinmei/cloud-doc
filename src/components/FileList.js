@@ -1,43 +1,88 @@
 import React, { useState, useEffect, useRef } from "react";
-import { List } from "antd";
-import { MediumOutlined, DeleteFilled, EditFilled } from "@ant-design/icons";
+import { List, Input, Button } from "antd";
+import {
+  MediumOutlined,
+  DeleteFilled,
+  EditFilled,
+  CloseOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 
-const mockData = [
-  {
-    id: "1",
-    title: "first post",
-    body: "should be aware of this",
-    createTime: 1677004129000,
-  },
-  {
-    id: "2",
-    title: "second post",
-    body: "## this is the title",
-    createTime: 1677004129000,
-  },
-  {
-    id: "3",
-    title: "wow~syukinmei No.1 fighting!!!",
-    body: "## this is the title",
-    createTime: 1677004129000,
-  },
-];
-
 const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
+  const [editStatus, setEditStatus] = useState(false); // 为编辑状态文件的id
+  const [value, setValue] = useState(""); // 编辑时input的内容
+
+  const node = useRef(null);
+
+  const closeInput = () => {
+    setEditStatus(false);
+    setValue("");
+  };
+  useEffect(() => {
+    const handleInputEvent = (event) => {
+      if (!editStatus) return;
+      const { keyCode } = event;
+      if (keyCode === 13) {
+        onSaveEdit(editStatus, value);
+        closeInput();
+      } else if (keyCode === 27) {
+        closeInput();
+      }
+    };
+
+    document.addEventListener("keyup", handleInputEvent);
+    return () => {
+      document.removeEventListener("keyup", handleInputEvent);
+    };
+  });
+
+  useEffect(() => {
+    if (editStatus) node.current.focus();
+  }, [editStatus]);
   return (
     <div>
       <List
-        dataSource={mockData}
+        dataSource={files}
         renderItem={(item) => (
           <List.Item>
             <div className="fy--center w100">
-              <MediumOutlined className="mr-small" />
-              <span className="flex-1 single-text-overflow">{item.title}</span>
-              <div>
-                <EditFilled className="mx-small" />
-                <DeleteFilled />
-              </div>
+              {item.id !== editStatus ? (
+                <>
+                  <MediumOutlined className="mr-small" />
+                  <span
+                    className="flex-1 single-text-overflow "
+                    onClick={() => onFileClick(item.id)}
+                  >
+                    {item.title}
+                  </span>
+                  <div>
+                    <EditFilled
+                      className="mx-small"
+                      onClick={() => {
+                        setEditStatus(item.id);
+                        setValue(item.title);
+                      }}
+                    />
+                    <DeleteFilled onClick={() => onFileDelete(item.id)} />
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-1">
+                  <Input
+                    className="flex-1 single-text-overflow"
+                    placeholder="请输入你要搜索的文件名"
+                    bordered={false}
+                    value={value}
+                    ref={node}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                    }}
+                  />
+                  <Button onClick={closeInput}>
+                    <CloseOutlined />
+                  </Button>
+                </div>
+              )}
             </div>
           </List.Item>
         )}
@@ -48,6 +93,9 @@ const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
 
 FileList.propTyoes = {
   files: PropTypes.array,
+  onFileClick: PropTypes.func,
+  onFileDelete: PropTypes.func,
+  onSaveEdit: PropTypes.func,
 };
 
 export default FileList;

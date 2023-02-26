@@ -74,8 +74,8 @@ FileSearch.propTypes = {
   onFileSearch: PropTypes.func.isRequired,
 };
 
-FileSearch.defaultProps={
-    title:'hello world'
-}
+FileSearch.defaultProps = {
+  title: "hello world",
+};
 
 export default FileSearch;
