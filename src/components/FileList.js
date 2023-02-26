@@ -7,6 +7,7 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import useKeyPress from "../hooks/useKeyPress";
 
 const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
   const [editStatus, setEditStatus] = useState(false); // 为编辑状态文件的id
@@ -14,26 +15,22 @@ const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
 
   const node = useRef(null);
 
+  const enterPressed = useKeyPress(13);
+  const escPressed = useKeyPress(27);
+
   const closeInput = () => {
     setEditStatus(false);
     setValue("");
   };
   useEffect(() => {
-    const handleInputEvent = (event) => {
-      if (!editStatus) return;
-      const { keyCode } = event;
-      if (keyCode === 13) {
-        onSaveEdit(editStatus, value);
-        closeInput();
-      } else if (keyCode === 27) {
-        closeInput();
-      }
-    };
+    if (!editStatus) return;
 
-    document.addEventListener("keyup", handleInputEvent);
-    return () => {
-      document.removeEventListener("keyup", handleInputEvent);
-    };
+    if (enterPressed) {
+      onSaveEdit(editStatus, value);
+      closeInput();
+    }
+
+    if (escPressed) closeInput();
   });
 
   useEffect(() => {

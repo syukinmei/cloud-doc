@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button, Input } from "antd";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import useKeyPress from "../hooks/useKeyPress";
 
 const FileSearch = ({ title, onFileSearch }) => {
   const [inputActive, setInputActive] = useState(false); // 输入框状态
@@ -9,26 +10,20 @@ const FileSearch = ({ title, onFileSearch }) => {
 
   const node = useRef(null);
 
+  const enterPressed = useKeyPress(13);
+  const escPressed = useKeyPress(27);
+
   const closeSearch = () => {
     setInputActive(false);
     setValue("");
   };
 
   useEffect(() => {
-    const handleInputEvent = (event) => {
-      if (!inputActive) return;
-      const { keyCode } = event;
-      if (keyCode === 13) {
-        onFileSearch(value);
-      } else if (keyCode === 27) {
-        closeSearch();
-      }
-    };
+    if (!inputActive) return;
 
-    document.addEventListener("keyup", handleInputEvent);
-    return () => {
-      document.removeEventListener("keyup", handleInputEvent);
-    };
+    if (enterPressed) onFileSearch(value);
+
+    if (escPressed) closeSearch();
   });
 
   useEffect(() => {
