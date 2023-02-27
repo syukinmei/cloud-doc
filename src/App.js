@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./styles.less";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
+import LeftMenuBtn from "./components/LeftMenuBtn";
 
 const mockData = [
   {
@@ -64,7 +65,7 @@ function App() {
   }, []);
   return (
     <div className="app-container vh100 flex">
-      <div className="left-menu">
+      <div className="left-menu fd--c pa-little">
         <FileSearch
           title="hello! cloud-doc"
           onFileSearch={(value) => {
@@ -78,6 +79,10 @@ function App() {
           onSaveEdit={(id, newValue) => {
             console.log("onSaveEdit", { id, newValue });
           }}
+        />
+        <LeftMenuBtn
+          onNewFile={() => console.log("onNewFile")}
+          onImportFile={() => console.log("onImportFile")}
         />
       </div>
       <div className="resize fxy--center" title="收缩侧边栏">

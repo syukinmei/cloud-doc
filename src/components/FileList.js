@@ -37,7 +37,7 @@ const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
     if (editStatus) node.current.focus();
   }, [editStatus]);
   return (
-    <div>
+    <div className="flex-1">
       <List
         dataSource={files}
         renderItem={(item) => (
@@ -88,7 +88,7 @@ const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
   );
 };
 
-FileList.propTyoes = {
+FileList.propTypes = {
   files: PropTypes.array,
   onFileClick: PropTypes.func,
   onFileDelete: PropTypes.func,
