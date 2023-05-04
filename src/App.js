@@ -3,6 +3,7 @@ import "./styles.less";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import LeftMenuBtn from "./components/LeftMenuBtn";
+import MarkDown from "./components/MarkDown";
 
 const mockData = [
   {
@@ -88,7 +89,9 @@ function App() {
       <div className="resize fxy--center" title="收缩侧边栏">
         ⋮
       </div>
-      <div className="right-main">内容区域</div>
+      <div className="right-main">
+        <MarkDown />
+      </div>
     </div>
   );
 }
