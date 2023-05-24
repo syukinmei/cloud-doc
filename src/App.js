@@ -65,10 +65,22 @@ function App() {
 
   const [files, setFiles] = useState(mockData); // 右侧文件列表
   const [activeFileId, setActiveFileId] = useState(""); // 选中文件id
+  const [searchFiles, setSearchFiles] = useState(null); // 搜索列表，搜索内容时值为array展示searchFiles，不搜索值为null
 
   useEffect(() => {
     dragControllerDiv();
   }, []);
+
+  const fileSearch = (value) => {
+    // 如果没有value表示关闭搜索，赋值为null
+    if (!value) {
+      setSearchFiles(null);
+      return;
+    }
+
+    const searchRes = files.filter((item) => item.title.includes(value));
+    setSearchFiles(searchRes);
+  };
 
   // 点击右侧文件
   const fileClick = (id) => {
@@ -96,14 +108,9 @@ function App() {
   return (
     <div className="app-container vh100 flex">
       <div className="left-menu fd--c pa-little">
-        <FileSearch
-          title="hello! cloud-doc"
-          onFileSearch={(value) => {
-            console.log(value);
-          }}
-        />
+        <FileSearch title="hello! cloud-doc" onFileSearch={fileSearch} />
         <FileList
-          files={files}
+          files={searchFiles || files}
           onFileClick={fileClick}
           onFileDelete={fileDelete}
           onSaveEdit={updateFileName}
