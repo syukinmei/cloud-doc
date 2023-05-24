@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.less";
+import { message } from "antd";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import LeftMenuBtn from "./components/LeftMenuBtn";
+import Markdown from "./components/Markdown";
 
 const mockData = [
   {
@@ -60,9 +62,37 @@ function App() {
       resize.setCapture && resize.setCapture(); //该函数在属于当前线程的指定窗口里设置鼠标捕获
     };
   };
+
+  const [files, setFiles] = useState(mockData); // 右侧文件列表
+  const [activeFileId, setActiveFileId] = useState(""); // 选中文件id
+
   useEffect(() => {
     dragControllerDiv();
   }, []);
+
+  // 点击右侧文件
+  const fileClick = (id) => {
+    setActiveFileId(id);
+  };
+
+  const fileDelete = (id) => {
+    const newFiles = files.filter((item) => item.id !== id);
+    setFiles(newFiles);
+    message.success("删除成功");
+  };
+
+  // 更新文档名称
+  const updateFileName = (id, newTitle) => {
+    const newFiles = files.map((item) => ({
+      ...item,
+      title: item.id === id ? newTitle : item.title,
+    }));
+    setFiles(newFiles);
+  };
+
+  const curOpenFile = () => {
+    return files.find((item) => item.id === activeFileId);
+  };
   return (
     <div className="app-container vh100 flex">
       <div className="left-menu fd--c pa-little">
@@ -73,12 +103,10 @@ function App() {
           }}
         />
         <FileList
-          files={mockData}
-          onFileClick={(id) => console.log("onFileClick", id)}
-          onFileDelete={(id) => console.log("delete", id)}
-          onSaveEdit={(id, newValue) => {
-            console.log("onSaveEdit", { id, newValue });
-          }}
+          files={files}
+          onFileClick={fileClick}
+          onFileDelete={fileDelete}
+          onSaveEdit={updateFileName}
         />
         <LeftMenuBtn
           onNewFile={() => console.log("onNewFile")}
@@ -88,7 +116,13 @@ function App() {
       <div className="resize fxy--center" title="收缩侧边栏">
         ⋮
       </div>
-      <div className="right-main">内容区域</div>
+      <div className="right-main">
+        {curOpenFile() ? (
+          <Markdown file={curOpenFile()} />
+        ) : (
+          <div className="start-page">请选择或新建 Markdown 文档</div>
+        )}
+      </div>
     </div>
   );
 }
