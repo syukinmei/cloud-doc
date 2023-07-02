@@ -11,6 +11,17 @@ function generateUUID() {
 }
 
 /**
+ * 同步阻塞线程 time 毫米，默认1000ms
+ * @param {number} time
+ * @returns
+ */
+const sleepSync = function (time = 1000) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), time);
+  });
+};
+
+/**
  * 防抖函数
  * @param {Function} fn 函数
  * @param {Number} interval 时间间隔，默认500ms
@@ -48,4 +59,4 @@ const throttle = (fn, interval) => {
   };
 };
 
-export { generateUUID, debounce, throttle };
+export { generateUUID, sleepSync, debounce, throttle };
