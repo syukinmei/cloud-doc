@@ -16,6 +16,7 @@ const FileSearch = ({ title, onFileSearch }) => {
   const closeSearch = () => {
     setInputActive(false);
     setValue("");
+    onFileSearch(""); // 关闭的时候搜索空，告诉外部组件关闭了搜索
   };
 
   useEffect(() => {
@@ -24,7 +25,9 @@ const FileSearch = ({ title, onFileSearch }) => {
     if (enterPressed) onFileSearch(value);
 
     if (escPressed) closeSearch();
-  });
+    // TODO：按下 enter 时，onFileSearch 会被调用，这个时候外层 App 组件就会更新，这样FileSearch 也会被更新，所以这段 effect 又会被调用，这时候如果我们按住 enter 键不松手，那么 第一个条件又成立，onFileSearch 又被触发，这样就会多次触发这个 effect。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enterPressed, escPressed]); // 添加依赖解决重复调用的bug
 
   useEffect(() => {
     if (inputActive) node.current.focus();
