@@ -178,6 +178,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.VC {
+  overflow: auto;
+}
 body {
   --color-little: #CCCCCC;
   --color-small: #999999;

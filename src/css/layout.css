@@ -178,3 +178,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.VC {
+  overflow: auto;
+}

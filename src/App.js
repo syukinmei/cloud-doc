@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./styles.less";
 import { message } from "antd";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import LeftMenuBtn from "./components/LeftMenuBtn";
 import MarkDown from "./components/MarkDown/index";
+import { generateUUID, sleepSync, throttle } from "./utils/util";
 
 const mockData = [
   {
@@ -105,9 +106,29 @@ function App() {
   const curOpenFile = () => {
     return files.find((item) => item.id === activeFileId);
   };
+
+  // 添加新文件
+  const createNewFile = useRef(
+    throttle(async () => {
+      const id = generateUUID();
+      const newFile = {
+        id,
+        title: "新增title",
+        body: "新增body",
+        createTime: new Date().getTime(),
+      };
+      setFiles((pre) => [...pre, newFile]);
+      setActiveFileId(newFile.id);
+      // 展示新增的 file。
+      await sleepSync(1);
+      const el = document.getElementById(`fileItemId-${newFile.id}`);
+      el && el.scrollIntoView({ block: "start", behavior: "smooth" });
+    }, 1000)
+  );
+
   return (
     <div className="app-container vh100 flex">
-      <div className="left-menu fd--c pa-little">
+      <div className="left-menu fd--c pa-little b-red">
         <FileSearch title="hello! cloud-doc" onFileSearch={fileSearch} />
         <FileList
           files={searchFiles || files}
@@ -116,7 +137,7 @@ function App() {
           onSaveEdit={updateFileName}
         />
         <LeftMenuBtn
-          onNewFile={() => console.log("onNewFile")}
+          onNewFile={() => createNewFile.current()}
           onImportFile={() => console.log("onImportFile")}
         />
       </div>

@@ -37,11 +37,11 @@ const FileList = ({ files, onFileClick, onFileDelete, onSaveEdit }) => {
     if (editStatus) node.current.focus();
   }, [editStatus]);
   return (
-    <div className="flex-1">
+    <div className="flex-1 VC">
       <List
         dataSource={files}
         renderItem={(item) => (
-          <List.Item>
+          <List.Item id={`fileItemId-${item.id}`}>
             <div className="fy--center w100">
               {item.id !== editStatus ? (
                 <>
