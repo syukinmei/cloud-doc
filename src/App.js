@@ -4,7 +4,7 @@ import { message } from "antd";
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import LeftMenuBtn from "./components/LeftMenuBtn";
-import Markdown from "./components/Markdown";
+import MarkDown from "./components/MarkDown/index";
 
 const mockData = [
   {
@@ -125,7 +125,7 @@ function App() {
       </div>
       <div className="right-main">
         {curOpenFile() ? (
-          <Markdown file={curOpenFile()} />
+          <MarkDown file={curOpenFile()} />
         ) : (
           <div className="start-page">请选择或新建 Markdown 文档</div>
         )}
