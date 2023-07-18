@@ -128,7 +128,7 @@ function App() {
 
   return (
     <div className="app-container vh100 flex">
-      <div className="left-menu fd--c pa-little b-red">
+      <div className="left-menu fd--c pa-little">
         <FileSearch title="hello! cloud-doc" onFileSearch={fileSearch} />
         <FileList
           files={searchFiles || files}

@@ -7,7 +7,6 @@ const MarkDown = ({ file }) => {
   const [vd, setVd] = useState();
 
   useEffect(() => {
-    console.log("空依赖");
     const vditor = new Vditor("contentEditor", {
       height: "100%",
       width: "100%",
@@ -35,7 +34,6 @@ const MarkDown = ({ file }) => {
   }, []);
 
   useEffect(() => {
-    console.log("file变化了", file, vd);
     if (vd)
       vd.setValue(
         "### " + file.title + "\n欢迎使用，`Vditro`\n" + file.createTime
