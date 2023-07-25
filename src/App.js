@@ -28,6 +28,15 @@ const mockData = [
   },
 ];
 
+const Store = window.require("electron-store");
+const store = new Store();
+
+store.set("name", "syukinmei");
+console.log(store.get("name"));
+
+store.delete("name");
+console.log(store.get("name"));
+
 function App() {
   const dragControllerDiv = function () {
     console.log("dragControllerDiv方法挂载");
