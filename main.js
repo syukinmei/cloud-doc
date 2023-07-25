@@ -2,6 +2,10 @@ const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 const remote = require("@electron/remote/main"); // 引入
 
+// 如果仅在渲染器进程中使用，则需要在主进程中调用 Store.initRenderer()，或者在主进程中创建一个新的 Store 实例（new Store()）
+const Store = require("electron-store");
+Store.initRenderer();
+
 let mainWindow = null;
 
 app.on('ready', () => {

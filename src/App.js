@@ -2,6 +2,15 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from 'antd';
 
+const Store = window.require("electron-store");
+const store = new Store();
+
+store.set("name", "syukinmei");
+console.log(store.get("name"));
+
+store.delete("name");
+console.log(store.get("name"));
+
 function App() {
   return (
     <div className="App">
